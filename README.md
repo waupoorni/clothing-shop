@@ -149,16 +149,23 @@ In the code, images are saved with a URL like
 
 Home: http://localhost/clothing-shop/
 
+
 Shop: http://localhost/clothing-shop/shop.php
+
 
 Cart: http://localhost/clothing-shop/cart.php
 
+
 Admin Register: http://localhost/clothing-shop/admin/register.php
+
 
 Admin Login: http://localhost/clothing-shop/admin/login.php
 
+
 Add Product: http://localhost/clothing-shop/admin/add_cloth.php
 
+
 Manage Products: /admin/clothes.php
+
 
 Messages: /admin/messages.php
