@@ -1,85 +1,89 @@
-Clothify — PHP Clothing Shop
+Clothify — PHP Clothing Shop (Windows)
 
-A simple web shop built with PHP + MySQL (no framework) for a coursework assignment.
-Includes a public storefront (home, shop with filters, cart) and a secure admin area (messages, products CRUD, image uploads).
+A simple web shop built with PHP + MySQL (no framework).
+Public storefront (home, shop with filters, cart) + secure admin area (messages, products CRUD, image uploads).
 
-Runs great on any Apache/PHP/MySQL stack.
+Tested on Windows 10/11 with XAMPP (Apache, PHP 8+, MySQL/MariaDB).
 
 ✨ Features
 
 Public
 
-Home page with featured/latest products
+Home with featured/latest products
 
-Shop grid with search, category/size filters, price range, sorting, and pagination
+Shop grid with search, category/size filters, price range, sorting, pagination
 
 Session cart: add / update / remove / clear
 
-About Us & Contact Us (stores messages in DB)
+About Us & Contact Us (saves messages to DB)
 
-Reusable top navbar component
+Reusable navbar
 
 Admin
 
-Admin register + login (passwords hashed)
+Admin register & login (hashed passwords)
 
-Sidebar: View Messages, Add Clothes, View / Edit / Delete Clothes
+Sidebar: View Messages, Add Clothes, View / Edit / Delete
 
-Image uploads with type checking (jpg/png/gif/webp)
+Image uploads (jpg/png/gif/webp) with basic validation
 
-CSRF protection on forms, prepared statements for DB
+CSRF tokens + prepared statements
 
 🧰 Stack
 
-PHP 8+ (works on 7.4+)
+PHP 8+ (works on PHP 7.4+)
 
 MySQL / MariaDB
 
-Apache (XAMPP)
+Apache (via XAMPP)
 
-HTML/CSS (no frontend framework)
-
-Sessions for auth & cart
+HTML/CSS, PHP sessions
 
 📁 Project Structure
+
 clothing-shop/
 ├─ admin/
 │  ├─ add_cloth.php
-│  ├─ clothes.php          # list + delete
-│  ├─ edit_cloth.php       # update
-│  ├─ view_cloth.php       # detail
+│  ├─ clothes.php
+│  ├─ edit_cloth.php
+│  ├─ view_cloth.php
 │  ├─ login.php / register.php / logout.php
 │  ├─ messages.php
 │  ├─ sidebar.php
-│  └─ auth.php             # session + CSRF helpers
+│  └─ auth.php
 ├─ components/
 │  └─ navbar.php
 ├─ config/
-│  └─ db.php               # DB connection
+│  └─ db.php
 ├─ uploads/
-│  └─ clothes/             # product images (writable)
-├─ assets/                 # optional static images/css
-├─ index.php               # home (featured)
-├─ shop.php                # storefront with filters
-├─ cart.php                # session cart
+│  └─ clothes/           ← product images (must exist)
+├─ assets/               ← optional static images/css
+├─ index.php             ← home (featured)
+├─ shop.php              ← storefront
+├─ cart.php              ← session cart
 ├─ about.php
 └─ contact.php
 
-⚙️ Setup
-1) Clone into your web root
+⚙️ Setup on Windows (XAMPP)
+1) Install & start XAMPP
 
-XAMPP (macOS):
+Download XAMPP from apachefriends.org and install to C:\xampp.
 
-cd /Applications/XAMPP/xamppfiles/htdocs
+Open XAMPP Control Panel → Start Apache and MySQL.
+
+2) Clone or copy the project into htdocs
+
+cd C:\xampp\htdocs
 git clone <your-repo-url> clothing-shop
+# Or copy the folder here manually
 
-2) Create database & tables
 
-Open phpMyAdmin → create database: clothing_shop, then run:
+3) Create database & tables
+
+Open http://localhost/phpmyadmin → create database: clothing_shop → run:
 
 USE clothing_shop;
 
--- Admin users
 CREATE TABLE IF NOT EXISTS admins (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(120) NOT NULL,
@@ -89,7 +93,6 @@ CREATE TABLE IF NOT EXISTS admins (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Contact messages
 CREATE TABLE IF NOT EXISTS contact_messages (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(120) NOT NULL,
@@ -99,7 +102,6 @@ CREATE TABLE IF NOT EXISTS contact_messages (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Products
 CREATE TABLE IF NOT EXISTS clothes (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(160) NOT NULL,
@@ -114,19 +116,14 @@ CREATE TABLE IF NOT EXISTS clothes (
 );
 
 
-Optional seed product:
-
-INSERT INTO clothes (name, sku, price, category, size, stock)
-VALUES ('Sample Tee', 'TEE-001', 19.99, 'Men', 'M', 10);
-
-3) Configure DB connection
+4) Configure DB connection
 
 Create config/db.php:
 
 <?php
 $host = "127.0.0.1";
 $user = "root";
-$pass = "";           // default for XAMPP
+$pass = "";            // XAMPP default on Windows
 $db   = "clothing_shop";
 
 $conn = new mysqli($host, $user, $pass, $db);
@@ -135,106 +132,33 @@ if ($conn->connect_error) {
 }
 mysqli_set_charset($conn, "utf8mb4");
 
-4) Make upload folder writable
-sudo mkdir -p /Applications/XAMPP/xamppfiles/htdocs/clothing-shop/uploads/clothes
-# Check which user Apache runs as: daemon or _www
-ps aux | egrep '(httpd|apache)' | grep -v grep
 
-# If 'daemon':
-sudo chown -R daemon:daemon /Applications/XAMPP/xamppfiles/htdocs/clothing-shop/uploads
-# If '_www', use _www:_www instead
+5) Create the uploads folder
 
-sudo find /Applications/XAMPP/xamppfiles/htdocs/clothing-shop/uploads -type d -exec chmod 775 {} \;
-sudo find /Applications/XAMPP/xamppfiles/htdocs/clothing-shop/uploads -type f -exec chmod 664 {} \;
-sudo chmod g+s /Applications/XAMPP/xamppfiles/htdocs/clothing-shop/uploads
+Make sure these folders exist (Windows usually doesn’t need special permissions):
 
-5) Start the server
+C:\xampp\htdocs\clothing-shop\uploads\
+C:\xampp\htdocs\clothing-shop\uploads\clothes\
 
-Start Apache + MySQL in XAMPP
 
-Visit:
+In the code, images are saved with a URL like
+/clothing-shop/uploads/clothes/filename.jpg
 
-http://localhost/clothing-shop/ (Home)
 
-http://localhost/clothing-shop/shop.php (Shop)
+▶️ Run
 
-http://localhost/clothing-shop/cart.php (Cart)
+Home: http://localhost/clothing-shop/
 
-http://localhost/clothing-shop/admin/register.php (Admin register)
+Shop: http://localhost/clothing-shop/shop.php
 
-http://localhost/clothing-shop/admin/login.php (Admin login)
+Cart: http://localhost/clothing-shop/cart.php
 
-http://localhost/clothing-shop/admin/add_cloth.php (Add product)
+Admin Register: http://localhost/clothing-shop/admin/register.php
 
-🔐 Security Notes
+Admin Login: http://localhost/clothing-shop/admin/login.php
 
-Passwords hashed with password_hash() / verified by password_verify().
+Add Product: http://localhost/clothing-shop/admin/add_cloth.php
 
-CSRF tokens on sensitive forms (admin & cart).
+Manage Products: /admin/clothes.php
 
-Prepared statements for all DB writes/reads.
-
-Uploads: extension + (where available) MIME checks; files stored under /uploads/clothes/.
-
-🧪 Common Issues & Fixes
-
-“Upload directory not writable”
-Fix ownership/permissions (see step 4). Confirm by visiting
-http://localhost/clothing-shop/uploads/clothes/ after placing a test file.
-
-“Invalid CSRF token”
-The page/session expired or was opened in multiple tabs. Refresh the page and resubmit.
-
-Images don’t show
-Ensure image_url saved like /clothing-shop/uploads/clothes/filename.jpg and your project folder is indeed clothing-shop.
-
-File upload fails silently
-Make sure the form has enctype="multipart/form-data" and increase PHP limits in php.ini if needed:
-
-file_uploads = On
-upload_max_filesize = 10M
-post_max_size = 12M
-
-🔗 Useful Routes
-
-/ — Home (Featured)
-
-/shop.php — Products grid (search/filters/sort/pagination)
-
-/cart.php — Session cart
-
-/about.php, /contact.php
-
-/admin/login.php, /admin/register.php
-
-/admin/add_cloth.php, /admin/clothes.php, /admin/edit_cloth.php, /admin/view_cloth.php
-
-/admin/messages.php
-
-🛣️ Roadmap / Ideas
-
-Product detail page (product.php)
-
-Cart → Checkout → Orders (tables: orders, order_items)
-
-Image size validation + thumbnails
-
-Admin: bulk upload via CSV
-
-Basic email notifications for new messages/orders
-
-📸 Screenshots
-
-Add images to /screenshots and reference here:
-
-![Home](screenshots/home.png)
-![Shop](screenshots/shop.png)
-![Admin](screenshots/admin.png)
-
-📝 License
-
-MIT — do whatever you want, just keep the license and attribution.
-
-🙌 Credits
-
-Built for coursework by Clothify team. Thanks to the PHP & XAMPP communities.
+Messages: /admin/messages.php
