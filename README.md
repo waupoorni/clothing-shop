@@ -145,27 +145,4 @@ In the code, images are saved with a URL like
 /clothing-shop/uploads/clothes/filename.jpg
 
 
-▶️ Run
 
-1) Home: http://localhost/clothing-shop/
-
-
-2) Shop: http://localhost/clothing-shop/shop.php
-
-
-3) Cart: http://localhost/clothing-shop/cart.php
-
-
-4)Admin Register: http://localhost/clothing-shop/admin/register.php
-
-
-5)Admin Login: http://localhost/clothing-shop/admin/login.php
-
-
-6) Add Product: http://localhost/clothing-shop/admin/add_cloth.php
-
-
-7) Manage Products: /admin/clothes.php
-
-
-8) Messages: /admin/messages.php
